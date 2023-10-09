@@ -1,4 +1,4 @@
-import { FeedbackOptions } from './feedback-options/feedback-options';
+import { FeedbackOptions } from './feedbackOptions/feedbackOptions';
 import { Component } from 'react';
 import { StatisticSet } from './statistic/statistic';
 import { Title } from './title/title';
@@ -10,51 +10,39 @@ export class App extends Component {
     bad: 0,
   }
   
-  onAddFeedback = (e) => {
-    this.setState((prev) => {
-      if (e.target.textContent === 'good') {
-        return {
-          good: prev.good + 1
-        }
-      }
-      if (e.target.textContent === 'neutral') {
-        return {
-          neutral: prev.neutral + 1
-        }
-      }
-      if (e.target.textContent === 'bad') {
-        return {
-          bad: prev.bad + 1
-        }
-      }
-    })
-  }
-  countTotalFeedback = ({ good, neutral, bad }) => {
-    const totalFeedback = good + neutral + bad;
+    onAddFeedback = value=> {
+      this.setState(prevState => ({
+        [value]: prevState[value] + 1,
+      }));
+  };
+  
+
+  countTotalFeedback = () => {
+    const totalFeedback = this.state.good + this.state.neutral + this.state.bad;
     return totalFeedback
   }
  
-  countPositiveFeedbackPercentage = (countTotalFeedback, { good, neutral, bad }) => {
+  countPositiveFeedbackPercentage = () => {
     let feedbackPercentage = 0;
-    if (good === 0) {
+    if (this.state.good === 0) {
       return feedbackPercentage = 0;
     }
      else{
-      feedbackPercentage = Math.round((100 / countTotalFeedback({ good, neutral, bad })) * good);
+      feedbackPercentage = Math.round((100 / this.countTotalFeedback()) * this.state.good);
       return feedbackPercentage
     }
     }
   
     render()
     {
+      const options = Object.keys(this.state);
       return (
             <Container>
- 
           <Title/>
-          <FeedbackOptions onAddFeedback={this.onAddFeedback} />
+          <FeedbackOptions onAddFeedback={this.onAddFeedback} options={ options} />
           <Statictic> Statistic
           <StatisticSet
-            state ={this.state}
+            {...this.state}
             countTotalFeedback={this.countTotalFeedback}
             countPositiveFeedbackPercentage={this.countPositiveFeedbackPercentage}
               />

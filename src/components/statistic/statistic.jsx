@@ -1,6 +1,6 @@
 import { ItemStatistic } from './statistic.styled';
-import { Notification } from 'components/notification-message/notification-message';
-export const StatisticSet = ({ state: { good, neutral, bad }, countTotalFeedback, countPositiveFeedbackPercentage  }) => {
+import { Notification } from 'components/notificationMessage/notificationMessage';
+export const StatisticSet = ({ good, neutral, bad , countTotalFeedback, countPositiveFeedbackPercentage  }) => {
     if (countTotalFeedback({ good, neutral, bad }) > 0) {
         return (
             <div>
